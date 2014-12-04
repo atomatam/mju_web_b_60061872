@@ -9,28 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입 페이지</title>
-<script lang="JavaScript">
-function checkIt(){
-	var userinput = eval("document.userInform");
-	if(!userinput.user_id.value){
-		alert("ID를 입력하세요");
-		document.addjoin.id.focus();
-		exit;
-	}
-	if(!userinput.user_pwd.value){
-		alert("비밀번호를 입력하세요");
-		return false;
-	}
-	if(!userinput.user_nickName.value){
-		alert("닉네임을 입력하세요");
-		return false;
-	}
-	if(!userinput.user_email.value){
-		alert("E-mail을 입력하세요");
-		return false;
-	}
-}
-</script>
+
 </head>
 <body>
 <jsp:include page="header.jsp"/>
