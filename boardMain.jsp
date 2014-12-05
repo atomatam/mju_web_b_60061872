@@ -41,6 +41,16 @@
 		position:relative;
 	}
 </style>
+<script lang="javascript">
+function checkIt(){
+	var searchinput = eval("document.form1");
+	if(!searchinput.keyword.value){
+		alert("검색어를 입력하세요");
+		document.addjoin.id.focus();
+		exit;
+	}
+}
+</script>
 </head>
 <body>
 	<div id="header">
@@ -49,7 +59,7 @@
 	<div id="content">
 		
 	<div id="searchBar">
-	<form name="form1" method="get" action="PageServlet">
+	<form name="form1" method="post" action="PageServlet" onsubmit="return checkIt()">
 		<input type="text" name="keyword">
 		<input type="submit" value="검색">
 		<input type="hidden" name="op" value="writingSearch">
@@ -59,7 +69,6 @@
 	<div id="contentArea">
 	<c:choose>
 		<c:when test="${requestScope.isInitSearch == false }">
-			<div id="elseModifybutton">
 			<ol>
 				<li>
 					<div id="titleBox">
@@ -72,41 +81,44 @@
 						Information(writer/date) - <c:out value="${requestScope.writing_writer} / ${requestScope.writing_date }"/>
 					</div>
 				</li>
+
+				<c:choose>
+				<c:when test="${requestScope.modifyMode!=true }">
 				<li>
 					<div id="contentBox">
-						<pre>${requestScope.writing_content }</pre>
+						${requestScope.writing_content }
 					</div>
 				</li>
+				</c:when>
+				
+				<c:otherwise>
+				<li>
+					<div id="contentBox">
+						${requestScope.writing_content }
+						sdf dsf dsf dsf sdfsd
+					</div>
+				</li>
+				</c:otherwise>
+				</c:choose>
 				
 				<li>	
 					<div id="historyBox">
-					히스토리--
-					<pre>${requestScope.writing_history }</pre>
+						<c:out value="${requestScope.writing_history }"/>
 					</div>
 				</li>
 				
 				<li>
-					<div id="imageBox">
-					${requestScope.images }ㄴㅇ말ㄴ어라ㅣㄴㅇㄹ닝
-					</div>
-				<li>
-			</ol>
-			</div>
-			<c:choose>
-				<c:when test="${sessionScope.isLogin=='true'}">
-					<div id="modifyButton">
-						<form name="form" method="post" action="PageServlet">
-							<input type="submit" value="정보 수정">
+					<div id="modify-button">
+						<form name="form3" method="post" action="PageServlet">
+							<input type="submit" value="정보 추가">
 							<input type="hidden" name="op" value="modify">
+							<input type="hidden" name="content" value=>
 						</form>
 					</div>
-					<div>
-						<jsp:include page="upload.jsp"/>
-					</div>
-				</c:when>
-			</c:choose>
+				</li>
+			</ol>
 		</c:when>
-
+		
 		<c:otherwise>
 			<h1>Welcome to Wiki COMGONG!!</h1>
 			<h3>원하시는 정보를 검색창에 검색해 주세요~!!</h3>

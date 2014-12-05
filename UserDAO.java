@@ -110,4 +110,41 @@ public class UserDAO {
 		
 		return user;
 	}
+	public static boolean insertMember(UserDTO member){
+		
+		Connection con=null;
+		String sql="";
+		PreparedStatement psmt=null;
+		ResultSet rs = null;
+		
+		try{
+			DataSource ds = getDataSource();
+			con = ds.getConnection();
+			sql = "select user_id from userDTO where user_id = ?";
+			psmt=con.prepareStatement(sql);
+			psmt.setString(1, member.getUser_id());
+			rs = psmt.executeQuery();
+//			psmt.close();
+				if(rs.next()==false){
+					sql="insert into userDTO(user_id,user_pwd,user_nickName,user_email)values(?,?,?,?)";
+					psmt=con.prepareStatement(sql);
+					psmt.setString(1, member.getUser_id());
+					psmt.setString(2, member.getUser_pwd());
+					psmt.setString(3, member.getUser_nickName());
+					psmt.setString(4, member.getUser_email());
+					
+					psmt.executeUpdate();
+					return true;
+				}
+		}
+		catch(Exception e){
+			e.getStackTrace();
+		}finally{
+			if(psmt!=null)try{psmt.close();}catch(SQLException ex){}
+			if(con!=null)try{con.close();}catch(SQLException ex){}
+		}
+		return false;
+	}
+	
 }
+
