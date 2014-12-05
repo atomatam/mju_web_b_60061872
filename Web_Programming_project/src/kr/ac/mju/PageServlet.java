@@ -99,14 +99,15 @@ public class PageServlet extends HttpServlet {
 				FileDTO filedto = null;
 			    int maxSize  = 1024*1024*10;            // 10Mbyte 제한
 			    String root = request.getSession().getServletContext().getRealPath("/");	 // 웹서버 컨테이너 경로
-			    String savePath = root + "\\upload\\";    // 파일 저장 경로(ex : /home/tour/web/ROOT/upload)
+			    String realPath = root + "\\upload\\";    // 파일 저장 경로(ex : /home/tour/web/ROOT/upload)
+			    String savePath = "upload\\";
 			    try {
-			        MultipartRequest multi = new MultipartRequest(request, savePath, maxSize, "UTF-8", new DefaultFileRenamePolicy());
+			        MultipartRequest multi = new MultipartRequest(request, realPath, maxSize, "UTF-8", new DefaultFileRenamePolicy());
 			        String uploadFile = multi.getOriginalFileName("uploadFile");		        // 파일업로드
 			        String explain = multi.getParameter("explain");
 			        String fileName = simDf.format(new Date(currentTime)) +"."+ uploadFile.substring(uploadFile.lastIndexOf(".")+1);
-			        File oldFile = new File(savePath+uploadFile);
-			        File newFile = new File(savePath+fileName);
+			        File oldFile = new File(realPath+uploadFile);
+			        File newFile = new File(realPath+fileName);
 			        if(!oldFile.renameTo(newFile)) {
 			        	System.out.println("복사가 안됨");		///////////////////////////////이거 나중에 예외 처리 후 지워야함.
 			        }
